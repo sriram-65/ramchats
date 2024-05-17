@@ -1,7 +1,7 @@
 // ChatRoom.js
 
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios'
 import chatsNot from '../../frontned/public/Feed-amico.png'
 const ChatRoom = () => {
 	const [messages, setMessages] = useState([]);
@@ -37,6 +37,19 @@ const ChatRoom = () => {
 		}
 	};
 
+	
+
+	const delt = async (id) =>{
+		try{
+			await axios.delete(`http://localhost:5000/delete/${id}`)
+			console.log("sucess")
+			alert("This  Meassage Was Deleted")
+			fetchMessages()
+		}
+		catch(er){
+			console.log("Error....")
+		}
+	}
 	useEffect(() => {
 		// Fetch messages on component mount
 		fetchMessages();
@@ -47,6 +60,7 @@ const ChatRoom = () => {
 
 		return () => clearInterval(interval);
 	}, []); // Run only once on mount
+
 
 	return (
 		<div>
@@ -60,7 +74,7 @@ const ChatRoom = () => {
                      
 					<li key={message._id}>
 						<strong>{message.user} :  {message.message}</strong> 
-                        <p style={{fontSize:"10px"}}> {message.timestamp}</p>
+                         <button onClick={() =>delt(message._id)}>Delete Msg</button>
 					</li>
 				))
                 

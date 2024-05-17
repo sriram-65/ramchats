@@ -54,6 +54,27 @@ app.post("/messages", async (req, res) => {
 	}
 });
 
+app.delete("/delete/:id" , async (req,res)=>{
+	try{
+		const {id} = req.params
+		const result = await ChatMessage.findByIdAndDelete(id)
+
+		if(!result){
+			res.status(404).json({
+				err:"Meassage Not Found 404"
+			})
+		}
+
+		res.status(200).json({
+			sucess:"Meassage Deleted Sucesfully"
+		})
+	}
+	catch(er){
+      return res.status(500).json("Internal Server Eror")
+	}
+
+})
+
 // Start the server
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
